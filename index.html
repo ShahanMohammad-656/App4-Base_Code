@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html> 
 <html> 
 <!-- The following code has been developed by students and/or researchers of the Freshman Research Initiative DIY Diagnostics Stream at The University of Texas at Austin.  This code is shared for demonstration purposes and should not be considered a product -- it is for entertainment purposes only.  Any user of this code does so at their own risk. Members of the DIY Stream, FRI, and The University of Texas system are not liable for anything related to this code.
@@ -10,40 +12,64 @@ Tim Riedel
 Author 2
  
 Further Information:
-http://diystream.cns.utexas.edu/
-
+http://cns.utexas.edu/fri
+ 
 Research Educator:
 Timothy Riedel
 triedel@utexas.edu
  
 Brief Description of Goal of Code:
-blah, blah, blah,
+This code aims to quiz the user on a few symptoms they may be having to create a diagnosis of either whooping cough or tuberculosis.
  
 Known Issues:
-blah, blah, blah, blah
-Ignore this error message if you see it using the javaScript console: Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.
+the divisions may be absent, but it should be running fine.
 
-References:
 https://www.w3schools.com/w3css/default.asp
 https://stackoverflow.com/questions/8211128/multiple-distinct-pages-in-one-html-file
 -->
 	
-<head> 
-	<title>Hello World</title>  
-]	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<link rel="stylesheet" href="w3.css">
-	<link rel="stylesheet" href="w3-colors-flat.css">
-</head> 
+   <head> 
+      <title>Hello World</title>  
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <link rel="stylesheet" href="w3.css">
+      <link rel="stylesheet" href="w3-colors-flat.css">
+   </head> 
 
 <script>
+    var tb_count = 0;
+    var wc_count = 0;
+//these set the variables initially
 
-	//YOUR JAVASCRIPT GOES HERE
+    function tbadd() {
+        tb_count += 25;
+        saveCounts();
+    }
+//rather than converting the count, i just made the counts the percent initially
 
-</script>	
+    function wcadd() {
+        wc_count += 25;
+        saveCounts();
+    }
+
+    function saveCounts() {
+        localStorage.setItem("tb_count", tb_count);
+        localStorage.setItem("wc_count", wc_count);
+    }
+//this is necessary or else the variables reset.
+
+    function calculateResults() {
+        var tb_count = parseInt(localStorage.getItem("tb_count")) || 0;
+        var wc_count = parseInt(localStorage.getItem("wc_count")) || 0;
+
+        var resultText = document.getElementById("resultText");
+        resultText.innerHTML = "Probability it is tuberculosis = " + tb_count + "%<br> Probability it is whooping cough = " + wc_count + "%";
+    }
+//we use this to actually write out the command on the results page, linking this command and the results page in the process.
+</script>
 
 
-<!-- THIS STYLE CODE HELPS MAKE YOUR APP LOOK GOOD. PROBABLY DONT MESS WITH IT -->
+
 <style>	
 .body {
      margin: 0em;
@@ -67,9 +93,83 @@ https://stackoverflow.com/questions/8211128/multiple-distinct-pages-in-one-html-
 </style>
 
 <body>
+<div id="header" class="w3-container w3-flat-carrot">
+	<h1>Tuberculosis or Whooping Cough?</h1>
 	
-	<!-- HERE IS WHERE ALL OF YOUR HTML PAGES GO -->
-	REPLACE THIS TEXT
+</div>
 	
-</body>
-</html>
+<div id="content" class="w3-container">
+	<p>Are you feeling like you have a severe cough and don't know where to start looking for diagnosis?</p>
+	
+	<a href="#one" class="w3-btn w3-grey w3-round"> Get Started </a>
+	
+	<p>The following code has been developed by students and/or researchers of the Freshman Research Initiative DIY Diagnostics Stream at The University of Texas at 		Austin.  This code is shared for demonstration purposes and should not be considered a product -- it is for entertainment purposes only. Any user of this code 			does so at their own risk. Members of the DIY Stream, FRI, and The University of Texas system are not liable for anything related to this code.</p>
+ 	
+	<p>THIS CODE SHOULD NOT BE USED TO DIAGNOSE ANY KIND OF MEDICAL CONDITION.</p>
+
+<div class="page" id="one">
+	<div id="header" class="w3-container w3-flat-carrot">
+		<h1>Question 1</h1>
+	</div>
+	
+    	<div id="content" class="w3-container">
+        <p>Are you feeling pain in your chest?</p>  
+	<a href="#two" onclick="tbadd();" class="w3-btn w3-black"> Yes</a>
+	<a href="#two" onclick="wcadd();" class="w3-btn w3-black"> No</a>
+<!--each click here will add percentage to the respective category and send the user to the next page. We repeat this four times.-->
+    	</div>
+</div>
+
+<div class="page" id="two">
+	<div class="w3-container w3-flat-carrot">
+		<h1>Question 2</h1>
+	</div>
+	
+	<div id="content" class="w3-container">
+	<p>Is your nose runny?</p>
+	<a href="#three" onclick="wcadd();" class="w3-btn w3-black"> Yes</a>
+	<a href="#three" onclick="tbadd();" class="w3-btn w3-black"> No</a>
+	</div>
+</div>	
+<!--note that I screwed up here at first because I was missing a div. It's fixed now. Whoops.-->
+<div class="page" id="three">
+	<div class="w3-container w3-flat-carrot">
+		<h1>Question 3</h1>
+	</div>
+	
+	<div id="content" class="w3-container">
+		<p>Have you experienced your skin turning red or purple?</p>
+		<a href="#four" onclick="wcadd();" class="w3-btn w3-black"> Yes</a>
+		<a href="#four" onclick="tbadd();" class="w3-btn w3-black"> No</a>
+	</div>
+	
+<div class="page" id="four">
+	<div class="w3-container w3-flat-carrot">
+		<h1>Question 4</h1>
+	</div>
+	
+	<div id="content" class="w3-container">
+		<p>Are you experiencing chills?</p>
+		<a href="#results" onclick="tbadd(); calculateResults();" class="w3-btn w3-black"> Seasonal</a>
+		<a href="#results" onclick="wcadd(); calculateResults();" class="w3-btn w3-black"> Chronic</a>
+	<!--upon clicking the last button, the results will be parsed and show on the results page. If this is absent, the app will need to be refreshed to get your results.-->
+	</div>
+</div>
+
+
+<div class="page" id="results">
+    <div class="w3-container w3-flat-carrot">
+        <h1>Results!</h1>
+    </div>
+
+    <p id="resultText"></p>
+<!--this refers to the linked page at the script settings way up top.-->
+
+    <script>
+        calculateResults();
+    </script>
+</div>
+
+<footer class="w3-bottom w3-container w3-flat-carrot">
+    <p>DIY!</p>
+</footer>
